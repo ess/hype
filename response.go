@@ -1,8 +1,13 @@
 package hype
 
+import (
+	"net/http"
+)
+
 type Response struct {
-	Data  []byte
-	Error error
+	Actual *http.Response
+	Data   []byte
+	Error  error
 }
 
 func (response Response) Okay() bool {
@@ -10,4 +15,8 @@ func (response Response) Okay() bool {
 		return true
 	}
 	return false
+}
+
+func (response Response) Header(name string) string {
+	return response.Actual.Header.Get(name)
 }

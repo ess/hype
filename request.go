@@ -32,24 +32,24 @@ func (request *Request) WithHeaderSet(headers ...*Header) *Request {
 
 func (request *Request) Response() Response {
 	if !request.okay() {
-		return Response{nil, request.err}
+		return Response{nil, nil, request.err}
 	}
 
 	response, err := request.raw.Do(request.actual)
 	if err != nil {
-		return Response{nil, err}
+		return Response{nil, nil, err}
 	}
 
 	body, err := ioutil.ReadAll(response.Body)
 	if err != nil {
-		return Response{nil, err}
+		return Response{nil, nil, err}
 	}
 
 	defer response.Body.Close()
 
 	if response.StatusCode < 200 || response.StatusCode > 299 {
-		return Response{nil, fmt.Errorf("response status: %d", response.StatusCode)}
+		return Response{nil, nil, fmt.Errorf("response status: %d", response.StatusCode)}
 	}
 
-	return Response{body, nil}
+	return Response{response, body, nil}
 }
