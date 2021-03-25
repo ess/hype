@@ -2,6 +2,7 @@
 
 ## History ##
 
+* v1.1.3 - made Reponse interfaceable
 * v1.1.2 - now with actual responses wrapped
 * v1.1.1 - now with extra 1s
 * v1.1.0 - and now 1.1.0
