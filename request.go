@@ -9,6 +9,11 @@ import (
 type Request struct {
 	actual *http.Request
 	raw    *http.Client
+	err    error
+}
+
+func (request *Request) okay() bool {
+	return request.err == nil
 }
 
 func (request *Request) WithHeader(header *Header) *Request {
@@ -16,14 +21,19 @@ func (request *Request) WithHeader(header *Header) *Request {
 }
 
 func (request *Request) WithHeaderSet(headers ...*Header) *Request {
-	for _, header := range headers {
-		request.actual.Header.Add(header.Name, header.Value)
+	if request.okay() {
+		for _, header := range headers {
+			request.actual.Header.Add(header.Name, header.Value)
+		}
 	}
 
 	return request
 }
 
 func (request *Request) Response() Response {
+	if !request.okay() {
+		return Response{nil, request.err}
+	}
 
 	response, err := request.raw.Do(request.actual)
 	if err != nil {

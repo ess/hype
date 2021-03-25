@@ -3,10 +3,8 @@ package hype
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strconv"
 	"strings"
 	"time"
 
@@ -56,7 +54,7 @@ func (driver *Driver) Delete(path string, params Params) *Request {
 	return driver.newRequest("DELETE", path, saneParams(params).ToValues(), nil)
 }
 
-func (driver *Driver) newRequest(verb string, path string, params url.Values, data []byte) (*Request, error) {
+func (driver *Driver) newRequest(verb string, path string, params url.Values, data []byte) *Request {
 	request, err := http.NewRequest(
 		verb,
 		driver.constructRequestURL(path, params),
@@ -64,10 +62,10 @@ func (driver *Driver) newRequest(verb string, path string, params url.Values, da
 	)
 
 	if err != nil {
-		return nil, err
+		return &Request{nil, nil, err}
 	}
 
-	return &Request{request, driver.raw}, nil
+	return &Request{request, driver.raw, nil}
 }
 
 func (driver *Driver) constructRequestURL(path string, params url.Values) string {
