@@ -1,4 +1,4 @@
-module github.com/ess/hype
+module github.com/ess/hype/v1
 
 go 1.15
 
