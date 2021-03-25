@@ -16,14 +16,10 @@ type Driver struct {
 	baseURL url.URL
 }
 
-func New(baseURL string, headers []*Header) (*Driver, error) {
+func New(baseURL string) (*Driver, error) {
 	url, err := url.Parse(baseURL)
 	if err != nil {
 		return nil, err
-	}
-
-	if headers == nil {
-		headers = make([]*Header, 0)
 	}
 
 	d := &Driver{
