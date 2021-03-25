@@ -5,18 +5,26 @@ import (
 )
 
 type Response struct {
-	Actual *http.Response
-	Data   []byte
-	Error  error
+	actual *http.Response
+	data   []byte
+	err    error
 }
 
 func (response Response) Okay() bool {
-	if response.Error == nil {
+	if response.err == nil {
 		return true
 	}
 	return false
 }
 
+func (response Response) Data() []byte {
+	return response.data
+}
+
+func (response Response) Error() error {
+	return response.err
+}
+
 func (response Response) Header(name string) string {
-	return response.Actual.Header.Get(name)
+	return response.actual.Header.Get(name)
 }
