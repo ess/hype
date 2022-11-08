@@ -2,6 +2,7 @@
 
 ## History ##
 
+* v1.1.5 - driver now supports skipping tls verification
 * v1.1.4 - all responses wrap an actual response
 * v1.1.3 - made Reponse interfaceable
 * v1.1.2 - now with actual responses wrapped
