@@ -2,6 +2,7 @@ package hype
 
 import (
 	"bytes"
+	"crypto/tls"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -28,6 +29,16 @@ func New(baseURL string) (*Driver, error) {
 	}
 
 	return d, nil
+}
+
+func (driver *Driver) WithoutTLSVerification() *Driver {
+	tr := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	client := &http.Client{Timeout: driver.raw.Timeout, Transport: tr}
+
+	return &Driver{client, driver.baseURL}
 }
 
 func (driver *Driver) Get(path string, params Params) *Request {
